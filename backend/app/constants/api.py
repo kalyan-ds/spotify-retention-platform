@@ -1,0 +1,10 @@
+class APIPaths:
+    V1 = "/api/v1"
+    AUTH = "/auth"
+    USERS = "/users"
+    DASHBOARD = "/dashboard"
+    STUDENTS = "/students"
+    ANALYTICS = "/analytics"
+    PREDICTIONS = "/predictions"
+    ADMIN = "/admin"
+    SETTINGS = "/settings"

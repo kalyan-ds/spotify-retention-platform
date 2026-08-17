@@ -1,0 +1,15 @@
+training:
+  random_seed: 42
+  test_size: 0.2
+  validation_size: 0.1
+  cross_validation:
+    strategy: "stratified_kfold" # kfold, stratified_kfold, time_series_split
+    n_splits: 5
+    shuffle: true
+  hyperparameter_search:
+    strategy: "random_search" # grid_search, random_search, bayesian
+    n_iter: 15
+    scoring_metric: "roc_auc"
+    early_stopping_rounds: 10
+  artifacts_dir: "backend/artifacts/ml_models"
+  experiments_dir: "backend/artifacts/ml_experiments"

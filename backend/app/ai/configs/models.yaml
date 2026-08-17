@@ -1,0 +1,39 @@
+models:
+  churn_predictor:
+    model_name: "Premium Churn Prediction"
+    task_type: "binary_classification"
+    default_algorithm: "xgboost"
+    supported_algorithms: ["random_forest", "xgboost", "lightgbm", "catboost", "logistic_regression", "gradient_boosting", "decision_tree"]
+    hyperparameters:
+      xgboost:
+        n_estimators: [100, 200, 300]
+        max_depth: [3, 5, 7]
+        learning_rate: [0.01, 0.05, 0.1]
+        subsample: [0.8, 1.0]
+      lightgbm:
+        n_estimators: [100, 200]
+        learning_rate: [0.03, 0.1]
+        num_leaves: [31, 63]
+
+  engagement_regressor:
+    model_name: "Engagement Score Prediction"
+    task_type: "regression"
+    default_algorithm: "lightgbm"
+    supported_algorithms: ["random_forest", "xgboost", "lightgbm", "catboost", "gradient_boosting"]
+    hyperparameters:
+      lightgbm:
+        n_estimators: [150, 300]
+        learning_rate: [0.03, 0.08]
+        num_leaves: [31, 50]
+
+  upgrade_propensity:
+    model_name: "Upgrade Propensity Prediction"
+    task_type: "binary_classification"
+    default_algorithm: "xgboost"
+    supported_algorithms: ["random_forest", "xgboost", "lightgbm", "logistic_regression"]
+
+  persona_classifier:
+    model_name: "Customer Persona Classification"
+    task_type: "multi_class"
+    default_algorithm: "random_forest"
+    supported_algorithms: ["random_forest", "lightgbm", "catboost", "decision_tree"]

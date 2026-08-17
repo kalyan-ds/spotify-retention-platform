@@ -1,0 +1,7 @@
+# Global Codeowners
+*       @spotify/retention-architecture-team @spotify/security-team
+
+# Core Subsystems
+/frontend/src/providers/  @spotify/react-core-team
+/frontend/src/utils/      @spotify/security-team
+/docs/                    @spotify/technical-writing-team

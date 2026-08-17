@@ -1,0 +1,66 @@
+graph TD
+    subgraph Client ["1. User & Client Layer"]
+        User["👥 End User / Business Analyst / Admin"]
+    end
+
+    subgraph Frontend ["2. Frontend Application Layer (React 19 + TypeScript + Vite)"]
+        Router["React Router DOM (Routes Mapping)"]
+        AuthProv["AuthProvider & ProtectedRoute (RBAC Guards)"]
+        AxiosClient["Axios HTTP Client (JWT Bearer Interceptor)"]
+        QueryCache["TanStack Query v5 (Client State & Cache)"]
+        UIComponents["Dashboard Views (/dashboard, /executive, /predictions, /audit)"]
+    end
+
+    subgraph Gateway ["3. Backend API Gateway Layer (FastAPI + Python 3.11)"]
+        CORSMiddleware["CORS & Security Headers Middleware"]
+        LoggingMiddleware["Request Logging & Correlation ID Middleware"]
+        APIRouters["APIRouter Endpoints (/api/v1/auth, /api/v1/predictions, /api/v1/ai)"]
+        JWTAuth["OAuth2 & JWT Token Authentication"]
+    end
+
+    subgraph CoreLogic ["4. Business Logic & MLOps Engine"]
+        ChurnSvc["ChurnService & KPI Engine"]
+        Repositories["Data Repositories Layer"]
+
+        subgraph MLInference ["Application Inference Component"]
+            InferenceHandler["FastAPI Prediction Handler"]
+            SHAPExplainer["SHAP Feature Explainer"]
+            ModelArtifacts["Model Artifacts (app/ml/models/*.joblib & models/churn_model.pkl)"]
+        end
+
+        subgraph MLOffline ["Offline Training & Pipeline"]
+            FeatureEng["Feature Engineering (listening_hours, skip_rate, etc.)"]
+            Trainer["Model Training (XGBoost, Random Forest, Logistic Regression)"]
+            ModelReg["DB Model Registry"]
+        end
+    end
+
+    subgraph Persistence ["5. Database Persistence Layer (MySQL)"]
+        ORMEngine["SQLAlchemy Async Engine & Sessions"]
+        MySQLDB[(MySQL Database: users, subscriptions, listening_history, model_versions)]
+    end
+
+    %% Flow Connections
+    User -->|HTTPS Request| UIComponents
+    UIComponents --> AuthProv
+    AuthProv --> Router
+    UIComponents --> QueryCache
+    QueryCache --> AxiosClient
+    AxiosClient -->|HTTPS / REST JSON + JWT| CORSMiddleware
+    CORSMiddleware --> LoggingMiddleware
+    LoggingMiddleware --> APIRouters
+    APIRouters --> JWTAuth
+    APIRouters --> ChurnSvc
+    APIRouters --> InferenceHandler
+    InferenceHandler --> ModelArtifacts
+    InferenceHandler --> SHAPExplainer
+    ChurnSvc --> Repositories
+    Repositories --> ORMEngine
+    ORMEngine -->|SQL / asyncmy| MySQLDB
+
+    %% Offline ML Pipeline Flow
+    MySQLDB -.->|Extract Raw History| FeatureEng
+    FeatureEng -.-> Trainer
+    Trainer -.->|Save Trained Joblib| ModelArtifacts
+    Trainer -.->|Register Metadata| ModelReg
+    ModelReg -.-> ORMEngine
