@@ -18,6 +18,10 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
+    @property
+    def cors_origins(self) -> List[str]:
+        return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS]
+
     # Database
     MYSQL_SERVER: str = "localhost"
     MYSQL_USER: str = "root"
