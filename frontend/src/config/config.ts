@@ -3,6 +3,8 @@
  * Spotify Premium Retention Intelligence Platform - Phase 7F.2.8.4
  */
 
+import { normalizeApiBaseUrl } from '../utils/url';
+
 export interface AppConfig {
   apiBaseUrl: string;
   environment: 'development' | 'staging' | 'production';
@@ -13,7 +15,7 @@ export interface AppConfig {
 }
 
 export const config: AppConfig = {
-  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || '/api/v1',
+  apiBaseUrl: normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL),
   environment: (import.meta.env.VITE_APP_ENV as AppConfig['environment']) || 'production',
   enableTelemetry: import.meta.env.VITE_ENABLE_TELEMETRY !== 'false',
   logLevel: (import.meta.env.VITE_LOG_LEVEL as AppConfig['logLevel']) || 'info',

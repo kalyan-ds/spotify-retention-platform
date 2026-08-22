@@ -1,3 +1,5 @@
+import { normalizeApiBaseUrl } from '../utils/url';
+
 export const ENV = {
   // Application details
   APP_NAME: 'Retention IQ',
@@ -9,7 +11,7 @@ export const ENV = {
   IS_DEVELOPMENT: import.meta.env.DEV,
 
   // API Config
-  API_BASE_URL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
+  API_BASE_URL: normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL),
 
   // Future Authentication
   AUTH_DOMAIN: import.meta.env.VITE_AUTH_DOMAIN || '',
